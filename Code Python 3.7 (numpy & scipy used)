@@ -1,0 +1,44 @@
+from itertools import chain
+import math
+import numpy as np
+import random
+from scipy.integrate import quad
+import turtle
+
+
+colors  = ["royal blue","deep sky blue","navy","light sky blue","dark turquoise","light sea green","skyblue","black"]
+v=turtle.Turtle()
+v.speed(0)
+v.width(5)
+
+def integrandX(x):
+    return math.cos(math.pi/2*x**2)
+
+def integrandY(x):
+    return math.sin(math.pi/2*x**2)
+invert = 1
+
+v.getscreen()
+v.color('black')
+
+for x in chain(np.arange(-5,5,0.01), np.arange(5,-5,-0.01)):
+    xPosition, err = quad(integrandX, 0, x)   
+    yPosition, err = quad(integrandY, 0, x)
+    A= 500 / math.sqrt(math.pi)
+    L= A * math.sqrt(math.pi) * x
+    radius = A**2 / L
+    if(x==5):
+        invert *= -1
+
+    if(x==-5 or x==5):
+        v.penup()
+        v.goto(invert*500*xPosition,500*yPosition)
+    else:
+        color = random.choice(colors) #Choose a random color
+        v.pendown()
+        v.color(color)
+        v.goto(invert*500*xPosition,500*yPosition)
+        print(str(radius))
+        
+turtle.done()
+    
